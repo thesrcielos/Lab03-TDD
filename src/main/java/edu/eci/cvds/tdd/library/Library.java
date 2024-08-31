@@ -77,6 +77,7 @@ public class Library {
         if (books.get(book) < 1 || userHasALoanWithThatBook(book,user)){
             return null;
         }
+        books.put(book, books.get(book)-1);
         Loan loan = new Loan();
         loan.setBook(book);
         loan.setUser(user);
