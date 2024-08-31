@@ -35,8 +35,21 @@ public class Library {
      * @return true if the book was stored false otherwise.
      */
     public boolean addBook(Book book) {
-        //TODO Implement the logic to add a new book into the map.
-        return false;
+        // TODO Implement the logic to add a new book into the map.
+        //Miguel implementation
+        boolean res = true;
+        try{
+            if (books.containsKey(book)){
+                for (Map.Entry<Book, Integer> b: books.entrySet()){
+                    if(b.equals(book)) b.setValue(1);
+                }
+            } else {
+                books.put(book, 1);
+            }
+        } catch (Exception e){
+            res = false;
+        }
+        return  res;
     }
 
     /**
