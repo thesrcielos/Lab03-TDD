@@ -77,11 +77,13 @@ public class Library {
         if (books.get(book) < 1 || userHasALoanWithThatBook(book,user)){
             return null;
         }
+        books.put(book, books.get(book)-1);
         Loan loan = new Loan();
         loan.setBook(book);
         loan.setUser(user);
         loan.setStatus(LoanStatus.ACTIVE);
         loan.setLoanDate(LocalDateTime.now());
+        loans.add(loan);
         return loan;
 
     }
@@ -97,7 +99,14 @@ public class Library {
      */
     public Loan returnLoan(Loan loan) {
         //TODO Implement the login of loan a book to a user based on the UserId and the isbn.
-        return null;
+        Book book = loan.getBook();
+        String userId = loan.getUser().getId();
+        Loan loanRetrieved = findLoanByUserIdAndBookIsbn(userId,book);
+        if (loanRetrieved == null) return null;
+        loanRetrieved.setStatus(LoanStatus.RETURNED);
+        Book loanBook = loanRetrieved.getBook();
+        books.put(loanBook, books.get(loanBook)+1);
+        return loan;
     }
 
     private User findUserById(String userId){
@@ -117,7 +126,11 @@ public class Library {
                 );
     }
 
-
+    private Loan findLoanByUserIdAndBookIsbn(String userId, Book book){
+        return loans.stream().filter(loan -> loan.getUser().getId().equals(userId) && loan.getBook().equals(book)
+                        && loan.getStatus().equals(LoanStatus.ACTIVE))
+                .findFirst().orElse(null);
+    }
     public boolean addUser(User user) {
         return users.add(user);
     }
