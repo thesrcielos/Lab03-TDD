@@ -2,7 +2,6 @@ package edu.eci.cvds.tdd.library;
 
 import edu.eci.cvds.tdd.library.book.Book;
 import edu.eci.cvds.tdd.library.loan.Loan;
-import edu.eci.cvds.tdd.library.loan.LoanStatus;
 import edu.eci.cvds.tdd.library.user.User;
 import org.junit.jupiter.api.Test;
 
@@ -82,7 +81,7 @@ public class LibraryTest {
         String isbn = "1717263847194";
         Library library = createExampleLibrary(userId,isbn);
         assertNotNull(addLoanToLibrary(library));
-        assertNull(library.loanABook("1","1717263847194"));
+        assertNull(library.loanABook("2","2353255345"));
     }
     @Test
     public void shouldntLoanABookIfTheresNotUnitsAvailable(){
