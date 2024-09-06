@@ -42,9 +42,7 @@ public class Library {
         boolean res = true;
         try{
             if (books.containsKey(book)){
-                for (Map.Entry<Book, Integer> b: books.entrySet()){
-                    if(b.equals(book)) b.setValue(1);
-                }
+                books.put(book,books.get(book)+1);
             } else {
                 books.put(book, 1);
             }
@@ -74,7 +72,8 @@ public class Library {
         if(book == null || user == null){
             return null;
         }
-        if (books.get(book) < 1 || userHasALoanWithThatBook(book,user)){
+        boolean userHasALoan = userHasALoanWithThatBook(book,user);
+        if (books.get(book) < 1 || userHasALoan){
             return null;
         }
         books.put(book, books.get(book)-1);
@@ -100,8 +99,8 @@ public class Library {
     public Loan returnLoan(Loan loan) {
         //TODO Implement the login of loan a book to a user based on the UserId and the isbn.
         Book book = loan.getBook();
-        String userId = loan.getUser().getId();
-        Loan loanRetrieved = findLoanByUserIdAndBookIsbn(userId,book);
+        User user = loan.getUser();
+        Loan loanRetrieved = findLoanByUserIdAndBookIsbn(user,book);
         if (loanRetrieved == null) return null;
         loanRetrieved.setStatus(LoanStatus.RETURNED);
         Book loanBook = loanRetrieved.getBook();
@@ -121,13 +120,15 @@ public class Library {
 
     private boolean userHasALoanWithThatBook(Book book, User user){
         return loans.stream()
-                .anyMatch(loan -> loan.getBook().equals(book) && loan.getUser().equals(user)
+                .anyMatch(loan -> loan.getBook().equals(book)
+                        && loan.getUser().equals(user)
                         && loan.getStatus().equals(LoanStatus.ACTIVE)
                 );
     }
 
-    private Loan findLoanByUserIdAndBookIsbn(String userId, Book book){
-        return loans.stream().filter(loan -> loan.getUser().getId().equals(userId) && loan.getBook().equals(book)
+    private Loan findLoanByUserIdAndBookIsbn(User user, Book book){
+        return loans.stream().filter(loan -> loan.getUser().equals(user)
+                        && loan.getBook().equals(book)
                         && loan.getStatus().equals(LoanStatus.ACTIVE))
                 .findFirst().orElse(null);
     }
