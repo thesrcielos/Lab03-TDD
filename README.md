@@ -98,6 +98,91 @@ Luego se implementa el método [`returnLoan`](https://github.com/thesrcielos/Lab
 ![image](./asset/pruebaLoanABookPasa.png)
 
 ### Cobertura
+Modificando `.pom` para implementar análisis de cobertura de Jacoco:
+> ![image](./asset/jacoco-pom.png)
+> ![image](./asset/jacoco-pom-2.png)
+
+Luego compilamos el proyecto para generar el análisis de cobertura:
+> ![image](./asset/jacoco-add.png)
+
+JaCoCo (Java Code Coverage) es una herramienta que nos ayuda a 
+evaluar con métricas, la cobertura actual de pruebas unitarias que 
+tiene el proyecto.
+
+Ahora en los archivos generados, luego de compilar hay que muestra el análisis
+de la cobertura de las pruebas de unidad:
+
+*Del proyecto*
+> ![image](./asset/initial-coverage.png)
+
+*De la clase Library*
+> ![image](./asset/initial-coverage-library-class.png)
 
 ### SonarQube
+SonarQube, del mismo modo que Jacoco, es una herramienta que permite
+hacer una evaluación del código, pero a diferencia de Jacoco, genera un análisis
+de calidad del código, abarcando posibles bugs, vulnerabilidades, "code smells" y 
+seguridad.
+
+Para poder implementar Sonar se debe descargar una imágen del proyecto usando Docker, 
+en este caso con una extensión:
+> ![image](./asset/SonarLint-plugin.png)
+
+Luego corriendo los comandos para iniciar el servicio de SonarQube luego de generar
+la imagen con Docker, corriendo el servicio http por el puerto 9000 que nos permite 
+acceder al menú login de sonar y generar el token:
+
+> ![image](./asset/sonar-jacoco-pom.png)
+
+> ![image](./asset/docker-sonarqube.png)
+
+> ![image](./asset/login-sonar.png)
+
+> ![image](./asset/login-sonar2.png)
+
+> ![image](./asset/sonarqube-platform.png)
+
+> ![image](./asset/sonar-platform-token.png)
+
+Se compila el proyecto ahora con la implementación de Sonar verificando que esté correctamente
+enlazada la dependencia en el archivo `.pom`:
+
+> ![image](./asset/mvn-build-with-sonar-jacoco.png)
+
+Luego de cubrir las pruebas de unidad requeridas:
+> ![image](./asset/Pruebas-unidad.png)
+
+> ![image](./asset/newTestForMoreCoverage.png)
+
+> ![image](./asset/newTestForMoreCoverage2.png)
+
+> ![image](./asset/newTestForMoreCoverage3.png)
+
+> ![image](./asset/newTestForMoreCoverage5.png)
+
+> ![image](./asset/newTestForMoreCoverage7.png)
+
+> ![image](./asset/newTestForMoreCoverage8.png)
+
+> ![image](./asset/newTestForMoreCoverage9.png)
+
+Los resultados de cobertura son:
+
+*Del proyecto*
+> ![image](./asset/final-coverage.png)
+
+*De la clase Library*
+> ![image](./asset/final-coverage2.png)
+
+Luego, compilamos el código con las pruebas de unidad implementadas y el escaneo de 
+Sonar:
+
+> ![image](./asset/sonar-mvn%20(1).png)
+
+> ![image](./asset/sonar-mvn%20(2).png)
+
+Luego se genera la integración de análisis con sonar:
+> `mvn verify sonar:sonar -D sonar.token=squ_7a0d6cc43acbe849db176349aa3ef52c127e9c7d` # (el token generado).
+
+> ![image](./asset/sonarqube-final-results.png)
 
